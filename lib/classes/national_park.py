@@ -1,20 +1,41 @@
 class NationalPark:
+    all = []
 
     def __init__(self, name):
-        self.name = name
-        self._trips = []
-        self._visitors = []
+        if isinstance(name, str) and name:
+            self._name = name
+        else:
+            raise Exception("Should be a string.")
+        NationalPark.all.append(self)
+
+
+    @property
+    def name(self):
+            return self._name
+
+    
+
         
-    def trips(self, new_trip=None):
+    def trips(self):
         from classes.trip import Trip
-        pass
-    
-    def visitors(self, new_visitor=None):
-        from classes.visitor import Visitor
-        pass
-    
+        return [tr for tr in Trip.all if tr.national_park == self]
+ 
+    def visitors(self):
+        from classes.trip import Trip
+        return list(set([vis.visitor for vis in Trip.all if vis.national_park == self]))
+
     def total_visits(self):
-        pass
+        return len(self.trips())
     
     def best_visitor(self):
-        pass
+        from classes.trip import Trip   
+        parks_list = [vis.visitor for vis in Trip.all if vis.national_park == self]
+        return max(parks_list, key = parks_list.count)
+
+
+        
+        
+
+
+
+        
